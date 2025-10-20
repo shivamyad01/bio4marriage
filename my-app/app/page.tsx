@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const features = [
   {
@@ -39,25 +39,63 @@ const testimonials = [
     name: 'Rajesh Kumar',
     role: 'Founder, TechStart',
     content: 'Bio4Marriage helped me create a professional biodata that impressed my potential matches. Found my life partner within weeks!',
-    image: '/placeholder-avatar.jpg',
+    image: '/images/avatar-1.jpg', // Moved to public/images directory
   },
   {
     name: 'Priya Sharma',
     role: 'Marketing Executive',
     content: 'The templates are beautiful and easy to customize. Highly recommended for anyone looking to create a marriage biodata.',
-    image: '/placeholder-avatar.jpg',
+    image: '/images/avatar-2.jpg', // Moved to public/images directory
   },
 ];
 
+// Add proper types for better type safety
+interface Testimonial {
+  name: string;
+  role: string;
+  content: string;
+  image: string;
+}
+
 export default function Home() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
+  // Memoize the testimonial update function
+  const nextTestimonial = useCallback(() => {
+    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
   }, []);
+
+  // Handle keyboard navigation
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      setCurrentTestimonial(prev => (prev - 1 + testimonials.length) % testimonials.length);
+    } else if (e.key === 'ArrowRight') {
+      nextTestimonial();
+    }
+  }, [nextTestimonial]);
+
+  // Set up auto-rotation and keyboard navigation
+  useEffect(() => {
+    setIsMounted(true);
+    
+    const interval = setInterval(() => {
+      nextTestimonial();
+    }, 5000);
+
+    // Add keyboard event listener
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [nextTestimonial, handleKeyDown]);
+
+  // Don't render anything on the server
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen">
@@ -218,16 +256,20 @@ export default function Home() {
                   </div>
                 </div>
               ))}
-              <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-2">
+              <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-2 mb-4">
                 {testimonials.map((_, index) => (
                   <button
                     key={index}
+                    type="button"
                     onClick={() => setCurrentTestimonial(index)}
-                    className={`w-3 h-3 rounded-full transition-colors ${
-                      currentTestimonial === index ? 'bg-pink-600' : 'bg-gray-300'
+                    className={`w-3 h-3 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 ${
+                      currentTestimonial === index ? 'bg-pink-600' : 'bg-gray-300 hover:bg-gray-400'
                     }`}
-                    aria-label={`Go to testimonial ${index + 1}`}
-                  />
+                    aria-label={`View testimonial from ${testimonials[index].name}`}
+                    aria-current={currentTestimonial === index ? 'true' : 'false'}
+                  >
+                    <span className="sr-only">View testimonial from {testimonials[index].name}</span>
+                  </button>
                 ))}
               </div>
             </div>
