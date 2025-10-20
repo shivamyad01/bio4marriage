@@ -1,11 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import marriageTemplate1 from "../assets/image.webp";
+import marriageTemplate2 from '../assets/image (2).webp';
+import marriageTemplate3 from '../assets/image (1).webp';
+
+const templates = [
+  {
+    id: 1,
+    name: 'Classic Green & Gold',
+    preview: marriageTemplate1,
+    description: 'Elegant design with traditional green and gold accents',
+  },
+  {
+    id: 2,
+    name: 'Modern Minimalist',
+    preview: marriageTemplate2,
+    description: 'Clean and professional look with ample white space',
+  },
+  {
+    id: 3,
+    name: 'Royal Blue',
+    preview: marriageTemplate3,
+    description: 'Rich blue tones with a regal appearance',
+  },
+];
 
 export default function CreateBiodata() {
   const router = useRouter();
-  const [step, setStep] = useState(1);
+  const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     dob: '',
@@ -17,6 +42,39 @@ export default function CreateBiodata() {
     about: '',
     partnerExpectations: '',
   });
+  
+  const [previewData, setPreviewData] = useState({
+    name: 'Your Name',
+    dob: 'DD/MM/YYYY',
+    gender: 'Gender',
+    email: 'your.email@example.com',
+    phone: '+91 XXXXXXXXXX',
+    education: 'Your Education',
+    profession: 'Your Profession',
+    about: 'A brief introduction about yourself...',
+    partnerExpectations: 'Your expectations from your partner...',
+  });
+  
+  const [step, setStep] = useState(1);
+  
+  const nextStep = () => {
+    setStep(prev => Math.min(prev + 1, 3));
+  };
+  
+  const prevStep = () => {
+    setStep(prev => Math.max(prev - 1, 1));
+  };
+
+  // Update preview data when form data changes
+  useEffect(() => {
+    const newPreviewData = { ...previewData };
+    Object.keys(formData).forEach(key => {
+      if (formData[key as keyof typeof formData]) {
+        newPreviewData[key as keyof typeof previewData] = formData[key as keyof typeof formData];
+      }
+    });
+    setPreviewData(newPreviewData);
+  }, [formData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -34,172 +92,236 @@ export default function CreateBiodata() {
     router.push('/preview');
   };
 
-  const nextStep = () => setStep(prev => prev + 1);
-  const prevStep = () => setStep(prev => prev - 1);
+
+  if (selectedTemplate === null) {
+    return (
+      <div className="py-16 bg-gray-50 min-h-screen">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold text-center mb-8">Select a Template</h1>
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {templates.map((template) => (
+              <div 
+                key={template.id}
+                onClick={() => setSelectedTemplate(template.id)}
+                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 border border-gray-100 hover:border-pink-200 w-full max-w-xs mx-auto cursor-pointer"
+              >
+                <div className="relative w-full aspect-[3/4] bg-gray-50">
+                  <Image
+                    src={template.preview}
+                    alt={template.name}
+                    fill
+                    className="object-contain p-3"
+                    priority
+                  />
+                </div>
+                <div className="p-4 border-t border-gray-100">
+                  <h3 className="font-medium text-gray-900 text-sm">{template.name}</h3>
+                  <p className="text-gray-500 text-xs mb-3 line-clamp-2 h-10">{template.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="py-16 bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen py-8">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold text-center mb-8">Create Your Marriage Biodata</h1>
-          
-          {/* Progress Bar */}
-          <div className="mb-8">
-            <div className="flex justify-between mb-2">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex flex-col items-center">
-                  <div 
-                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      i <= step ? 'bg-pink-600 text-white' : 'bg-gray-200 text-gray-600'
-                    }`}
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Editor Form */}
+          <div className="w-full lg:w-1/2">
+            <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-6 space-y-4">
+              <h1 className="text-2xl font-bold mb-6">Edit Your Biodata</h1>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  placeholder="Enter your full name"
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                  <input
+                    type="date"
+                    name="dob"
+                    value={formData.dob}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                  <select
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                   >
-                    {i}
-                  </div>
-                  <span className="text-xs mt-2">
-                    {i === 1 ? 'Personal' : i === 2 ? 'Education' : 'Preferences'}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className="bg-pink-600 h-2 rounded-full transition-all duration-300" 
-                style={{ width: `${(step / 3) * 100}%` }}
-              ></div>
-            </div>
-          </div>
-
-          <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-            {step === 1 && (
-              <div className="space-y-4">
-                <h2 className="text-xl font-semibold mb-4">Personal Information</h2>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-pink-500 focus:border-pink-500"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-                    <input
-                      type="date"
-                      name="dob"
-                      value={formData.dob}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                    <select
-                      name="gender"
-                      value={formData.gender}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                      required
-                    >
-                      <option value="">Select Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
               </div>
-            )}
 
-            {step === 2 && (
-              <div className="space-y-4">
-                <h2 className="text-xl font-semibold mb-4">Education & Career</h2>
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Highest Education</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                   <input
-                    type="text"
-                    name="education"
-                    value={formData.education}
+                    type="email"
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    placeholder="e.g., B.Tech Computer Science"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    placeholder="your.email@example.com"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Profession</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                   <input
-                    type="text"
-                    name="profession"
-                    value={formData.profession}
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    placeholder="e.g., Software Engineer at Tech Company"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    placeholder="+91 XXXXXXXXXX"
                   />
                 </div>
               </div>
-            )}
 
-            {step === 3 && (
-              <div className="space-y-4">
-                <h2 className="text-xl font-semibold mb-4">About & Preferences</h2>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">About You</label>
-                  <textarea
-                    name="about"
-                    value={formData.about}
-                    onChange={handleChange}
-                    rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    placeholder="Tell us about yourself, your family, interests, etc."
-                  ></textarea>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Partner Expectations</label>
-                  <textarea
-                    name="partnerExpectations"
-                    value={formData.partnerExpectations}
-                    onChange={handleChange}
-                    rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    placeholder="What are you looking for in a partner?"
-                  ></textarea>
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Education</label>
+                <input
+                  type="text"
+                  name="education"
+                  value={formData.education}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  placeholder="Your highest degree/education"
+                />
               </div>
-            )}
 
-            <div className="mt-8 flex justify-between">
-              <button
-                type="button"
-                onClick={prevStep}
-                disabled={step === 1}
-                className={`px-6 py-2 rounded-md ${
-                  step === 1 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                Previous
-              </button>
-              {step < 3 ? (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Profession</label>
+                <input
+                  type="text"
+                  name="profession"
+                  value={formData.profession}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  placeholder="Your current profession"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">About You</label>
+                <textarea
+                  name="about"
+                  value={formData.about}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  placeholder="Tell us about yourself..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Partner Expectations</label>
+                <textarea
+                  name="partnerExpectations"
+                  value={formData.partnerExpectations}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  placeholder="Your expectations from your partner..."
+                />
+              </div>
+
+              <div className="flex justify-between pt-4">
                 <button
                   type="button"
-                  onClick={nextStep}
-                  className="px-6 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700"
+                  onClick={() => setSelectedTemplate(null)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
-                  Next
+                  Back to Templates
                 </button>
-              ) : (
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700"
+                  className="px-6 py-2 text-sm font-medium text-white bg-pink-600 rounded-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
-                  Create Biodata
+                  Save & Continue
                 </button>
-              )}
+              </div>
+            </form>
+          </div>
+
+          {/* Template Preview */}
+          <div className="lg:w-1/2">
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div className="p-4 border-b border-gray-100">
+                <h2 className="text-lg font-semibold text-gray-800">Preview</h2>
+              </div>
+              <div className="relative aspect-[3/4] bg-gray-50">
+                <Image
+                  src={templates[selectedTemplate - 1].preview}
+                  alt={templates[selectedTemplate - 1].name}
+                  fill
+                  className="object-contain p-4"
+                />
+                {/* Overlay text on the template */}
+                <div className="absolute inset-0 p-8 text-black">
+                  <div className="flex flex-col h-full">
+                    <div className="mb-4">
+                      <h1 className="text-2xl font-bold">{previewData.name}</h1>
+                      <p className="text-gray-600">{previewData.profession}</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <p className="text-sm text-gray-500">Date of Birth</p>
+                        <p>{previewData.dob}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Gender</p>
+                        <p>{previewData.gender}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Email</p>
+                        <p className="text-sm break-all">{previewData.email}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Phone</p>
+                        <p>{previewData.phone}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Education</p>
+                        <p>{previewData.education}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="mb-4">
+                      <h3 className="font-semibold mb-1">About Me</h3>
+                      <p className="text-sm">{previewData.about}</p>
+                    </div>
+                    
+                    <div className="mt-auto">
+                      <h3 className="font-semibold mb-1">Partner Expectations</h3>
+                      <p className="text-sm">{previewData.partnerExpectations}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
