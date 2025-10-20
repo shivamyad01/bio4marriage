@@ -109,91 +109,31 @@ export default function Home() {
     try {
       const doc = new (jsPDF as any)();
       
-      // Initialize autoTable
-      (autoTable as any)(doc, {
-        head: [['', '']],
-        body: [['', '']],
-        didDrawPage: () => {}
-      });
-      
-      // Add title
-      doc.setFontSize(24);
-      doc.setTextColor(40, 40, 40);
-      doc.setFont('helvetica', 'bold');
-      doc.text('BIO DATA', 105, 25, { align: 'center' });
-      
-      // Add a line under title
-      doc.setDrawColor(255, 105, 180);
-      doc.setLineWidth(0.5);
-      doc.line(20, 32, 190, 32);
-      
-      // Add personal information section
-      doc.setFontSize(14);
-      doc.setTextColor(40, 40, 40);
-      doc.setFont('helvetica', 'bold');
-      doc.text('Personal Information', 20, 50);
-      
-      // Add personal information table
-      const personalData = [
-        ['Full Name', formData.name || 'Not provided'],
-        ['Date of Birth', formData.dob || 'Not provided'],
-        ['Gender', formData.gender || 'Not provided'],
-        ['Email', formData.email || 'Not provided']
-      ];
-      
-      (autoTable as any)(doc, {
-        startY: 60,
-        head: [['Field', 'Details']],
-        body: personalData,
-        theme: 'grid',
-        headStyles: { 
-          fillColor: [255, 182, 193],
-          textColor: [0, 0, 0],
-          fontStyle: 'bold'
-        },
-        styles: {
-          cellPadding: 5,
-          fontSize: 12,
-          cellWidth: 'wrap',
-          valign: 'middle'
-        },
-        columnStyles: {
-          0: { fontStyle: 'bold', cellWidth: 60 },
-          1: { cellWidth: 'auto' }
-        },
-        margin: { left: 20, right: 20 }
-      });
-      
-      // Add about section
-      const finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 15 : 100;
-      doc.setFontSize(14);
-      doc.text('About Me', 20, finalY);
-      
-      doc.setFontSize(12);
-      doc.setFont('helvetica', 'normal');
-      const aboutText = formData.about || 'No information provided';
-      const splitText = doc.splitTextToSize(aboutText, 170);
-      doc.text(splitText, 20, finalY + 10);
-      
       // Add template preview if available
       if (selectedTemplate) {
         try {
           const template = templates.find(t => t.id === selectedTemplate);
           if (template) {
-            doc.addPage();
-            doc.setFontSize(16);
-            doc.text('Selected Template', 105, 20, { align: 'center' });
-            
-            // Add template image
+            // Add template image as the only page
             const dataUrl = await (domtoimage as any).toPng(previewRef.current);
-            doc.addImage(dataUrl, 'PNG', 20, 30, 170, 200);
+            
+            // Add the image to the PDF (centered)
+            const imgWidth = 180; // Slightly smaller than page width for margins
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const imgHeight = (pageHeight * imgWidth) / pageWidth;
+            const x = (pageWidth - imgWidth) / 2;
+            const y = 10; // Small top margin
+            
+            doc.addImage(dataUrl, 'PNG', x, y, imgWidth, imgHeight);
           }
         } catch (imgError) {
           console.error('Error adding template image:', imgError);
+          return; // Don't save if there's an error with the image
         }
       }
       
-      // Save the PDF
+      // Save the PDF with just the template image
       doc.save(`biodata-${formData.name || 'profile'}.pdf`);
       
     } catch (error) {
