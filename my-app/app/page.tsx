@@ -2,7 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import * as domtoimage from 'dom-to-image';
 import marriageTemplate1 from "./assets/image.webp";
 import marriageTemplate2 from './assets/image (2).webp';
 import marriageTemplate3 from './assets/image (1).webp';
@@ -28,7 +31,7 @@ const templates = [
     preview: marriageTemplate3,
     description: 'Rich blue tones with a regal appearance',
     image: '/images/marriage-template-3.jpg'
-  },
+  }
 ];
 
 const features = [
@@ -97,6 +100,107 @@ export default function Home() {
     email: '',
     about: ''
   });
+
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  const generatePDF = async () => {
+    if (!previewRef.current) return;
+    
+    try {
+      const doc = new (jsPDF as any)();
+      
+      // Initialize autoTable
+      (autoTable as any)(doc, {
+        head: [['', '']],
+        body: [['', '']],
+        didDrawPage: () => {}
+      });
+      
+      // Add title
+      doc.setFontSize(24);
+      doc.setTextColor(40, 40, 40);
+      doc.setFont('helvetica', 'bold');
+      doc.text('BIO DATA', 105, 25, { align: 'center' });
+      
+      // Add a line under title
+      doc.setDrawColor(255, 105, 180);
+      doc.setLineWidth(0.5);
+      doc.line(20, 32, 190, 32);
+      
+      // Add personal information section
+      doc.setFontSize(14);
+      doc.setTextColor(40, 40, 40);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Personal Information', 20, 50);
+      
+      // Add personal information table
+      const personalData = [
+        ['Full Name', formData.name || 'Not provided'],
+        ['Date of Birth', formData.dob || 'Not provided'],
+        ['Gender', formData.gender || 'Not provided'],
+        ['Email', formData.email || 'Not provided']
+      ];
+      
+      (autoTable as any)(doc, {
+        startY: 60,
+        head: [['Field', 'Details']],
+        body: personalData,
+        theme: 'grid',
+        headStyles: { 
+          fillColor: [255, 182, 193],
+          textColor: [0, 0, 0],
+          fontStyle: 'bold'
+        },
+        styles: {
+          cellPadding: 5,
+          fontSize: 12,
+          cellWidth: 'wrap',
+          valign: 'middle'
+        },
+        columnStyles: {
+          0: { fontStyle: 'bold', cellWidth: 60 },
+          1: { cellWidth: 'auto' }
+        },
+        margin: { left: 20, right: 20 }
+      });
+      
+      // Add about section
+      const finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 15 : 100;
+      doc.setFontSize(14);
+      doc.text('About Me', 20, finalY);
+      
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'normal');
+      const aboutText = formData.about || 'No information provided';
+      const splitText = doc.splitTextToSize(aboutText, 170);
+      doc.text(splitText, 20, finalY + 10);
+      
+      // Add template preview if available
+      if (selectedTemplate) {
+        try {
+          const template = templates.find(t => t.id === selectedTemplate);
+          if (template) {
+            doc.addPage();
+            doc.setFontSize(16);
+            doc.text('Selected Template', 105, 20, { align: 'center' });
+            
+            // Add template image
+            const dataUrl = await (domtoimage as any).toPng(previewRef.current);
+            doc.addImage(dataUrl, 'PNG', 20, 30, 170, 200);
+          }
+        } catch (imgError) {
+          console.error('Error adding template image:', imgError);
+        }
+      }
+      
+      // Save the PDF
+      doc.save(`biodata-${formData.name || 'profile'}.pdf`);
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Error generating PDF. Please try again.');
+    }
+  };
 
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -412,15 +516,18 @@ export default function Home() {
                     </div>
 
                     <div className="pt-4">
-                      <button className="w-full bg-pink-600 hover:bg-pink-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200">
-                        Save & Continue
+                      <button 
+                        onClick={generatePDF}
+                        className="w-full bg-pink-600 hover:bg-pink-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
+                      >
+                        Download Biodata as PDF
                       </button>
                     </div>
                   </div>
 
                   {/* Preview */}
                   <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                    <div className="relative w-full aspect-[3/4] bg-white rounded-lg overflow-hidden">
+                    <div ref={previewRef} className="relative w-full aspect-[3/4] bg-white rounded-lg overflow-hidden">
                     <Image
                       src={templates.find(t => t.id === selectedTemplate)?.preview || ''}
                       alt="Template Preview"
