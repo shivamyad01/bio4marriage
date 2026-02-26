@@ -89,8 +89,8 @@ const popularArticles = [
     link: '/help/update-profile'
   },
   {
-    title: 'Understanding our pricing plans',
-    link: '/pricing'
+    title: 'Understanding download & payment',
+    link: '/help/download-biodata'
   },
   {
     title: 'How to delete your account',
