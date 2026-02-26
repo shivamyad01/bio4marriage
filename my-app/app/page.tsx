@@ -309,18 +309,42 @@ export default function Home() {
 
             {/* Right Column - Template Showcase */}
             <div className="lg:w-[45%] relative animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-              <div className="relative max-w-[380px] mx-auto">
-                {/* Main card */}
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-pink-500/10 border border-white/50 aspect-[3/4] animate-float">
+              <div className="relative max-w-[360px] mx-auto">
+                {/* Decorative frame behind */}
+                <div className="absolute -inset-3 sm:-inset-4 rounded-[2rem] bg-gradient-to-br from-pink-200/40 via-purple-200/30 to-blue-200/40 blur-sm" />
+                <div className="absolute -inset-1.5 sm:-inset-2 rounded-[1.75rem] border-2 border-dashed border-pink-200/50" />
+
+                {/* Main template card */}
+                <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-pink-500/15 border border-white/70 aspect-[3/4] bg-white">
                   <TemplatePreview templateId={1} />
                 </div>
-                {/* Floating side cards */}
-                <div className="absolute -bottom-4 -left-8 sm:-left-12 w-[120px] sm:w-[140px] aspect-[3/4] rounded-2xl overflow-hidden shadow-xl transform -rotate-6 border-4 border-white/90 animate-float" style={{ animationDelay: '1s' }}>
-                  <TemplatePreview templateId={4} />
+
+                {/* Floating badge - top right */}
+                <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-white rounded-2xl shadow-lg shadow-gray-200/60 px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-100 animate-float z-10">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"/></svg>
+                    </div>
+                    <div>
+                      <div className="text-sm sm:text-base font-extrabold text-gray-900 leading-none">4.9</div>
+                      <div className="text-[10px] text-gray-400 font-medium">Rating</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="absolute -top-4 -right-8 sm:-right-12 w-[120px] sm:w-[140px] aspect-[3/4] rounded-2xl overflow-hidden shadow-xl transform rotate-6 border-4 border-white/90 animate-float" style={{ animationDelay: '2s' }}>
-                  <TemplatePreview templateId={7} />
+
+                {/* Floating badge - bottom left */}
+                <div className="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 bg-white rounded-2xl shadow-lg shadow-gray-200/60 px-3 py-2 sm:px-4 sm:py-2.5 border border-gray-100 animate-float z-10" style={{ animationDelay: '1.5s' }}>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div>
+                      <div className="text-sm sm:text-base font-extrabold text-gray-900 leading-none">50K+</div>
+                      <div className="text-[10px] text-gray-400 font-medium">Downloads</div>
+                    </div>
+                  </div>
                 </div>
+
                 {/* Decorative blobs */}
                 <div className="absolute -z-10 w-40 h-40 bg-pink-300/30 rounded-full -bottom-12 -right-12 blur-3xl" />
                 <div className="absolute -z-10 w-32 h-32 bg-purple-300/30 rounded-full -top-8 left-8 blur-3xl" />
@@ -385,12 +409,12 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Template grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
+          {/* Template grid — horizontal scroll on mobile */}
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory no-scrollbar sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 lg:gap-8 sm:overflow-visible sm:pb-0 max-w-6xl mx-auto -mx-4 px-4 sm:mx-auto sm:px-0">
             {visibleTemplates.map((template) => (
               <div
                 key={template.id}
-                className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100/80 hover:border-pink-200"
+                className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100/80 hover:border-pink-200 min-w-[280px] snap-center sm:min-w-0"
               >
                 <div className="relative w-full aspect-[3/4] bg-gray-50 overflow-hidden">
                   <TemplatePreview templateId={template.id} />
@@ -458,44 +482,55 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 max-w-6xl mx-auto">
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory no-scrollbar sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5 lg:gap-6 sm:overflow-visible sm:pb-0 max-w-6xl mx-auto -mx-4 px-4 sm:mx-auto sm:px-0">
             {religions.map((religion) => (
               <Link
                 key={religion}
                 href={`/templates?religion=${religion}`}
-                className="group relative bg-white rounded-2xl sm:rounded-3xl border border-gray-100 hover:border-pink-200 p-5 sm:p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+                className="group relative rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1.5 min-w-[280px] snap-center sm:min-w-0"
               >
-                {/* Gradient accent */}
-                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${religionColors[religion]} opacity-80 group-hover:opacity-100 transition-opacity`} />
-                
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br ${religionColors[religion]} flex items-center justify-center text-white text-xl sm:text-2xl shadow-lg shrink-0`}>
-                    {religionIcons[religion]}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1 group-hover:text-pink-600 transition-colors">
-                      {religion} Biodata
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-500 leading-relaxed line-clamp-2">
-                      {religionDescriptions[religion]}
-                    </p>
-                    <div className="mt-2.5 sm:mt-3 flex items-center gap-2">
-                      <span className="text-[10px] sm:text-xs font-semibold text-gray-400">3 templates</span>
-                      <span className="text-gray-300">•</span>
-                      <span className="text-[10px] sm:text-xs font-semibold text-pink-600">Paid downloads</span>
+                {/* Full gradient background */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${religionColors[religion]} opacity-[0.07] group-hover:opacity-[0.12] transition-opacity`} />
+                <div className="relative bg-white/80 backdrop-blur-sm border border-gray-100/80 group-hover:border-pink-200/60 rounded-2xl sm:rounded-3xl p-6 sm:p-7 h-full transition-colors">
+                  {/* Top gradient bar */}
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${religionColors[religion]} rounded-t-3xl`} />
+
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${religionColors[religion]} flex items-center justify-center text-white text-2xl sm:text-3xl shadow-lg group-hover:scale-105 group-hover:shadow-xl transition-all duration-300 shrink-0`}>
+                      {religionIcons[religion]}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg sm:text-xl font-extrabold text-gray-900 group-hover:text-pink-600 transition-colors">
+                        {religion} Biodata
+                      </h3>
+                      <span className="inline-flex items-center gap-1.5 mt-1 text-xs font-semibold text-gray-400">
+                        <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${religionColors[religion]}`} />
+                        3 premium templates
+                      </span>
                     </div>
                   </div>
-                </div>
 
-                <div className="mt-4 flex gap-2">
-                  {templates
-                    .filter((t) => t.religion === religion)
-                    .slice(0, 3)
-                    .map((t) => (
-                      <div key={t.id} className="flex-1 aspect-[3/4] rounded-lg sm:rounded-xl overflow-hidden border border-gray-200/60 bg-gray-50 group-hover:border-pink-200 transition-colors">
-                        <TemplatePreview templateId={t.id} />
-                      </div>
-                    ))}
+                  <p className="text-sm text-gray-500 leading-relaxed mb-5 line-clamp-2">
+                    {religionDescriptions[religion]}
+                  </p>
+
+                  {/* CTA row */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex -space-x-1.5">
+                      {templates
+                        .filter((t) => t.religion === religion)
+                        .slice(0, 3)
+                        .map((t, i) => (
+                          <div key={t.id} className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br ${religionColors[religion]} border-2 border-white shadow-sm flex items-center justify-center text-white text-[10px] font-bold`} style={{ opacity: 1 - i * 0.2 }}>
+                            {i + 1}
+                          </div>
+                        ))}
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-sm font-bold text-pink-600 group-hover:gap-2 transition-all">
+                      View Templates
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}
