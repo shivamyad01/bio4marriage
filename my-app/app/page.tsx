@@ -34,41 +34,62 @@ const religionDescriptions: Record<string, string> = {
   Jain: 'Sacred Ahimsa-inspired designs with Navkar mantra and Tirthankara art.',
 };
 
+const FeatureIcons = {
+  templates: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+  ),
+  edit: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
+  ),
+  download: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+  ),
+  shield: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+  ),
+  globe: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg>
+  ),
+  wallet: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/></svg>
+  ),
+};
+
 const features = [
   {
     title: '18+ Premium Templates',
     description: 'Professionally crafted designs for Hindu, Muslim, Christian, Sikh, Buddhist & Jain traditions.',
-    icon: '🎨',
+    icon: FeatureIcons.templates,
     gradient: 'from-pink-500 to-rose-500',
   },
   {
     title: 'Easy Drag & Fill',
     description: 'Simple step-by-step form — fill your details and watch your biodata come alive instantly.',
-    icon: '✏️',
+    icon: FeatureIcons.edit,
     gradient: 'from-violet-500 to-purple-500',
   },
   {
     title: 'HD PDF Download',
     description: 'Export your finished biodata as a crystal-clear PDF ready to print or share digitally.',
-    icon: '📥',
+    icon: FeatureIcons.download,
     gradient: 'from-blue-500 to-cyan-500',
   },
   {
     title: '100% Secure & Private',
     description: 'Your personal data is never stored or shared. Create with complete peace of mind.',
-    icon: '🔒',
+    icon: FeatureIcons.shield,
     gradient: 'from-emerald-500 to-green-500',
   },
   {
     title: 'All Religions Supported',
     description: 'Dedicated templates for every major Indian religion with culturally appropriate designs.',
-    icon: '🙏',
+    icon: FeatureIcons.globe,
     gradient: 'from-amber-500 to-orange-500',
   },
   {
     title: 'Affordable Pricing',
     description: 'Download any template after a secure, one-time payment — no subscriptions.',
-    icon: '💰',
+    icon: FeatureIcons.wallet,
     gradient: 'from-teal-500 to-cyan-500',
   },
 ];
@@ -157,13 +178,22 @@ const faqs = [
   },
 ];
 
+const StatIcons = {
+  doc: <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>,
+  heart: <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>,
+  grid: <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
+  users: <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>,
+  star: <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"/></svg>,
+  bolt: <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>,
+};
+
 const stats = [
-  { label: 'Biodatas Created', value: '50,000+', icon: '📄' },
-  { label: 'Happy Couples', value: '10,000+', icon: '💑' },
-  { label: 'Templates', value: '18+', icon: '🎨' },
-  { label: 'Religions', value: '6', icon: '🙏' },
-  { label: 'User Rating', value: '4.9★', icon: '⭐' },
-  { label: 'Download', value: 'One-time', icon: '💰' },
+  { label: 'Biodatas Created', value: '50,000+', icon: StatIcons.doc },
+  { label: 'Happy Couples', value: '10,000+', icon: StatIcons.heart },
+  { label: 'Templates', value: '18+', icon: StatIcons.grid },
+  { label: 'Religions', value: '6', icon: StatIcons.users },
+  { label: 'User Rating', value: '4.9★', icon: StatIcons.star },
+  { label: 'Download', value: 'Instant', icon: StatIcons.bolt },
 ];
 
 export default function Home() {
@@ -308,7 +338,7 @@ export default function Home() {
           <div className="grid grid-cols-3 md:grid-cols-6 gap-2 sm:gap-4">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center py-3 sm:py-4 rounded-2xl hover:bg-gray-50/80 transition-colors">
-                <div className="text-xl sm:text-2xl mb-1">{stat.icon}</div>
+                <div className="flex items-center justify-center text-pink-500 mb-1.5">{stat.icon}</div>
                 <div className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">{stat.value}</div>
                 <div className="text-[10px] sm:text-xs text-gray-500 font-medium">{stat.label}</div>
               </div>
@@ -318,7 +348,7 @@ export default function Home() {
       </section>
 
       {/* ═══════ RELIGION-WISE TEMPLATES SHOWCASE ═══════ */}
-      <section className="py-20 md:py-28 bg-gradient-to-b from-white via-gray-50/50 to-gray-50" id="templates">
+      <section className="py-14 md:py-20 bg-gradient-to-b from-white via-gray-50/50 to-gray-50" id="templates">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-14">
             <span className="inline-flex items-center gap-1.5 bg-pink-50 text-pink-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 border border-pink-100/60">
@@ -416,7 +446,7 @@ export default function Home() {
       </section>
 
       {/* ═══════ RELIGION-SPECIFIC SHOWCASE SECTION ═══════ */}
-      <section className="py-20 md:py-28 bg-white">
+      <section className="py-14 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-14">
             <h2 className="text-3xl sm:text-4xl md:text-[2.75rem] font-extrabold text-gray-900 mb-4 leading-tight">
@@ -474,9 +504,9 @@ export default function Home() {
       </section>
 
       {/* ═══════ FEATURES SECTION ═══════ */}
-      <section className="py-20 md:py-28 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-14 md:py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-14 sm:mb-16">
+          <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 border border-purple-100/60">
               <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
               Why Choose Us
@@ -508,9 +538,9 @@ export default function Home() {
       </section>
 
       {/* ═══════ HOW IT WORKS ═══════ */}
-      <section className="py-20 md:py-28 bg-white">
+      <section className="py-14 md:py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-14 sm:mb-16">
+          <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 border border-blue-100/60">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
               Simple Process
@@ -530,19 +560,19 @@ export default function Home() {
                   step: '1',
                   title: 'Choose Template',
                   description: 'Browse 18+ templates across 6 religions. Pick one that matches your style.',
-                  emoji: '🎨',
+                  icon: <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L12 12.75 6.429 9.75m11.142 0l4.179 2.25-9.75 5.25-9.75-5.25 4.179-2.25" /></svg>,
                 },
                 {
                   step: '2',
                   title: 'Fill Your Details',
                   description: 'Enter personal, education, family & professional info with our easy form.',
-                  emoji: '✏️',
+                  icon: <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>,
                 },
                 {
                   step: '3',
                   title: 'Pay & Download',
                   description: 'Preview your biodata, complete payment, and download the HD PDF instantly.',
-                  emoji: '📥',
+                  icon: <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>,
                 },
               ].map((item, index) => (
                 <div key={index} className="relative text-center group">
@@ -553,8 +583,8 @@ export default function Home() {
                     </div>
                   )}
                   <div className="relative z-10">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-2xl sm:rounded-3xl bg-gradient-to-br from-pink-500 to-purple-600 text-white text-3xl sm:text-4xl flex items-center justify-center mb-5 sm:mb-6 shadow-xl shadow-pink-500/15 group-hover:scale-105 transition-transform">
-                      {item.emoji}
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-2xl sm:rounded-3xl bg-gradient-to-br from-pink-500 to-purple-600 text-white flex items-center justify-center mb-5 sm:mb-6 shadow-xl shadow-pink-500/15 group-hover:scale-105 transition-transform">
+                      {item.icon}
                     </div>
                     <div className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-pink-100 text-pink-700 font-bold text-xs sm:text-sm mb-3">
                       {item.step}
@@ -581,9 +611,9 @@ export default function Home() {
       {/* Pricing preview removed per request */}
 
       {/* ═══════ TESTIMONIALS ═══════ */}
-      <section className="py-20 md:py-28 bg-gradient-to-b from-gray-50/50 to-white">
+      <section className="py-14 md:py-20 bg-gradient-to-b from-gray-50/50 to-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-14 sm:mb-16">
+          <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 border border-amber-100/60">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
               Testimonials
@@ -650,9 +680,9 @@ export default function Home() {
       </section>
 
       {/* ═══════ FAQ SECTION ═══════ */}
-      <section className="py-20 md:py-28 bg-white" id="faq">
+      <section className="py-14 md:py-20 bg-white" id="faq">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-14">
+          <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 border border-indigo-100/60">
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
               FAQ
@@ -696,7 +726,7 @@ export default function Home() {
       </section>
 
       {/* ═══════ FINAL CTA ═══════ */}
-      <section className="relative py-20 sm:py-24 overflow-hidden">
+      <section className="relative py-14 sm:py-18 overflow-hidden">
         {/* Gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-pink-600 via-purple-600 to-indigo-600" />
         {/* Noise texture */}
@@ -734,7 +764,8 @@ export default function Home() {
             </Link>
           </div>
           <p className="mt-6 sm:mt-8 text-xs sm:text-sm opacity-70">
-            🔒 Secure payments via Razorpay · No subscription needed · 100% privacy
+            <svg className="inline-block w-3.5 h-3.5 mr-1 -mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+            Secure payments via Razorpay · No subscription needed · 100% privacy
           </p>
         </div>
       </section>
