@@ -27,8 +27,8 @@ export default function LoginPage() {
       // const result = await response.json();
       // if (!response.ok) throw new Error(result.message || 'Login failed');
       
-      // Redirect to dashboard or intended page
-      router.push('/dashboard');
+      // Redirect to create page after login
+      router.push('/create');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during login');
     } finally {
